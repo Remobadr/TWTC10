@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrative Executive Nomination & Live Voting Portal</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for poll analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .candidate-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+        .badge-list-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+        .badge-list-2 {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+            border: 1px solid #e9d5ff;
+        }
+        .badge-list-3 {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        .glass-header {
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(12px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="glass-header text-white sticky top-0 z-50 border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                
+                <!-- Title & Department -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-lg text-white shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-vote-yea"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                            Administrative Executive Elections
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Live Cloud Sync
+                            </span>
+                        </h1>
+                        <p class="text-xs text-slate-400">Executive Leadership Transition & Nomination Voting</p>
+                    </div>
+                </div>
+
+                <!-- Handover Announcement Banner -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl p-2.5 px-4 flex items-center space-x-3 text-xs">
+                    <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                        <i class="fa-solid fa-right-left text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Position Handover Notice</span>
+                        <span class="text-slate-200 font-semibold">
+                            <strong class="text-amber-300">Mariam Badr</strong> stepped down & nominated <strong class="text-emerald-400">Riham Mohamed</strong>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Countdown & Voting Window Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-2 h-full bg-blue-600"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                
+                <!-- Time & Schedule Details -->
+                <div class="lg:col-span-6 space-y-2">
+                    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                        <i class="fa-solid fa-clock"></i> Official Schedule
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900">Voting Window: Today 6:00 PM – 8:00 PM</h2>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Cast your vote for the preferred candidate. Votes are transmitted in real-time to the central secure database.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-xs font-medium pt-1 text-slate-500">
+                        <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-blue-500"></i> Scheduled Today</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-hourglass-start text-emerald-500"></i> Duration: 2 Hours</span>
+                        <span id="userVoteBadge" class="hidden text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full border border-emerald-300">
+                            <i class="fa-solid fa-check-circle"></i> You Have Voted
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Live Timer Display -->
+                <div class="lg:col-span-6 bg-slate-900 text-white rounded-xl p-5 border border-slate-800 flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center justify-between w-full mb-3 border-b border-slate-800 pb-2">
+                        <span id="votingStatusBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> VOTING STARTS AT 6:00 PM
+                        </span>
+
+                        <!-- Demo Override Toggle -->
+                        <button onclick="toggleVotingSimulation()" class="text-[11px] text-blue-400 hover:text-blue-300 font-medium underline flex items-center gap-1">
+                            <i class="fa-solid fa-sliders"></i> Test Window Toggle
+                        </button>
+                    </div>
+
+                    <!-- Counter Numbers -->
+                    <div class="grid grid-cols-4 gap-3 text-center my-1 w-full max-w-sm">
+                        <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                            <span id="timerHours" class="text-2xl font-black text-blue-400 font-mono">00</span>
+                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Hours</span>
+                        </div>
+                        <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                            <span id="timerMins" class="text-2xl font-black text-blue-400 font-mono">00</span>
+                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Mins</span>
+                        </div>
+                        <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                            <span id="timerSecs" class="text-2xl font-black text-blue-400 font-mono">00</span>
+                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Secs</span>
+                        </div>
+                        <div class="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                            <span id="timerMs" class="text-2xl font-black text-emerald-400 font-mono">WAIT</span>
+                            <span class="text-[10px] text-slate-400 block uppercase font-medium">State</span>
+                        </div>
+                    </div>
+
+                    <p id="timerSubtext" class="text-[11px] text-slate-400 mt-2">
+                        Countdown active until 6:00 PM opening
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Analytics & View Switching Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">Official Nominees Lists</h2>
+                <p class="text-xs text-slate-500">Categorized by administrative eligibility tiers</p>
+            </div>
+
+            <!-- View Toggles -->
+            <div class="flex items-center gap-2">
+                <button onclick="switchTab('nominees')" id="tab-nominees" class="px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Nominees & Voting
+                </button>
+                <button onclick="switchTab('analytics')" id="tab-analytics" class="px-4 py-2 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i> Real-Time Poll Analytics
+                </button>
+            </div>
+        </div>
+
+        <!-- VIEW 1: NOMINEE LISTS GRID -->
+        <div id="view-nominees" class="space-y-8">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- LIST 1: TOP PRIORITY -->
+                <div class="bg-white rounded-2xl border border-blue-200 shadow-sm flex flex-col overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-900 to-slate-900 text-white p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-300 bg-blue-950/60 px-2.5 py-0.5 rounded-full border border-blue-800">
+                                List 1 &bull; Highest Priority
+                            </span>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">3 Candidates</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">First Eligible Tier</h3>
+                        <p class="text-[11px] text-slate-300">Primary recommended candidates for the position</p>
+                    </div>
+
+                    <div class="p-4 space-y-4 flex-grow bg-slate-50/50" id="list-1-container">
+                        <!-- Candidate 1 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm border border-blue-200">
+                                        AA
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">1. Ahmed Adel</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium">First Eligible Nominee</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-1 text-[10px] font-bold px-2 py-0.5 rounded-full">List #1</span>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[11px] font-medium text-slate-600">
+                                    <span>Recorded Votes</span>
+                                    <span class="font-bold text-blue-700" id="votes-ahmed-adel">0 votes (0%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-ahmed-adel" class="bg-blue-600 h-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <button onclick="castVote('Ahmed Adel', 'List 1')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Ahmed Adel
+                            </button>
+                        </div>
+
+                        <!-- Candidate 2 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm border border-blue-200">
+                                        SA
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">2. Shahd Ashraf</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium">First Eligible Nominee</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-1 text-[10px] font-bold px-2 py-0.5 rounded-full">List #1</span>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[11px] font-medium text-slate-600">
+                                    <span>Recorded Votes</span>
+                                    <span class="font-bold text-blue-700" id="votes-shahd-ashraf">0 votes (0%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-shahd-ashraf" class="bg-blue-600 h-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <button onclick="castVote('Shahd Ashraf', 'List 1')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Shahd Ashraf
+                            </button>
+                        </div>
+
+                        <!-- Candidate 3 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm border border-blue-200">
+                                        MD
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">3. Mohamed El Deeb</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium">First Eligible Nominee</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-1 text-[10px] font-bold px-2 py-0.5 rounded-full">List #1</span>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[11px] font-medium text-slate-600">
+                                    <span>Recorded Votes</span>
+                                    <span class="font-bold text-blue-700" id="votes-mohamed-el-deeb">0 votes (0%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-mohamed-el-deeb" class="bg-blue-600 h-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <button onclick="castVote('Mohamed El Deeb', 'List 1')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Mohamed El Deeb
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIST 2: SECOND PRIORITY -->
+                <div class="bg-white rounded-2xl border border-purple-200 shadow-sm flex flex-col overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-900 to-slate-900 text-white p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-purple-300 bg-purple-950/60 px-2.5 py-0.5 rounded-full border border-purple-800">
+                                List 2 &bull; Secondary Priority
+                            </span>
+                            <span class="text-xs bg-purple-500/20 text-purple-300 font-bold px-2 py-0.5 rounded">7 Candidates</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Second Priority Tier</h3>
+                        <p class="text-[11px] text-slate-300">Secondary eligible candidates pool</p>
+                    </div>
+
+                    <div class="p-4 space-y-4 flex-grow bg-slate-50/50 custom-scrollbar overflow-y-auto max-h-[620px]" id="list-2-container">
+                        
+                        <!-- Candidate 1 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">AD</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">1. Asmaa El Deksh</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-asmaa-el-deksh">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Asmaa El Deksh', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 2 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">AM</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">2. Ayat Mohamed</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-ayat-mohamed">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Ayat Mohamed', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 3 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">SR</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">3. Shrouk Raafat</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-shrouk-raafat">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Shrouk Raafat', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 4 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">AA</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">4. Alaa Ali</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-alaa-ali">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Alaa Ali', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 5 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">AA</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">5. Asmaa Ali</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-asmaa-ali">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Asmaa Ali', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 6 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">YE</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">6. Youssef Emad</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-youssef-emad">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Youssef Emad', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                        <!-- Candidate 7 -->
+                        <div class="candidate-card bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">MA</div>
+                                    <h4 class="font-bold text-slate-900 text-xs">7. Mohamed Amr</h4>
+                                </div>
+                                <span class="text-[10px] text-purple-700 font-bold" id="votes-mohamed-amr">0 votes</span>
+                            </div>
+                            <button onclick="castVote('Mohamed Amr', 'List 2')" class="vote-btn w-full py-1.5 bg-slate-800 hover:bg-purple-700 text-white font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-vote-yea"></i> Vote
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- LIST 3: THIRD PRIORITY -->
+                <div class="bg-white rounded-2xl border border-amber-200 shadow-sm flex flex-col overflow-hidden">
+                    <div class="bg-gradient-to-r from-amber-900 to-slate-900 text-white p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300 bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-800">
+                                List 3 &bull; Third Priority
+                            </span>
+                            <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded">3 Candidates</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Third Priority Tier</h3>
+                        <p class="text-[11px] text-slate-300">Third tier backup nominees</p>
+                    </div>
+
+                    <div class="p-4 space-y-4 flex-grow bg-slate-50/50" id="list-3-container">
+                        
+                        <!-- Candidate 1 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm border border-amber-200">HM</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">1. Habiba Mohamed</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium" id="votes-habiba-mohamed">0 votes</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-3 text-[10px] font-bold px-2 py-0.5 rounded-full">List #3</span>
+                            </div>
+
+                            <button onclick="castVote('Habiba Mohamed', 'List 3')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-amber-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Habiba Mohamed
+                            </button>
+                        </div>
+
+                        <!-- Candidate 2 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm border border-amber-200">NA</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">2. Nora Ahmed</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium" id="votes-nora-ahmed">0 votes</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-3 text-[10px] font-bold px-2 py-0.5 rounded-full">List #3</span>
+                            </div>
+
+                            <button onclick="castVote('Nora Ahmed', 'List 3')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-amber-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Nora Ahmed
+                            </button>
+                        </div>
+
+                        <!-- Candidate 3 -->
+                        <div class="candidate-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm border border-amber-200">AN</div>
+                                    <div>
+                                        <h4 class="font-bold text-slate-900 text-sm">3. Ashraqat Nouh</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium" id="votes-ashraqat-nouh">0 votes</span>
+                                    </div>
+                                </div>
+                                <span class="badge-list-3 text-[10px] font-bold px-2 py-0.5 rounded-full">List #3</span>
+                            </div>
+
+                            <button onclick="castVote('Ashraqat Nouh', 'List 3')" class="vote-btn w-full py-2 bg-slate-900 hover:bg-amber-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-vote-yea"></i> Vote for Ashraqat Nouh
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- VIEW 2: ANALYTICS & RESULTS BREAKDOWN (Hidden by default) -->
+        <div id="view-analytics" class="space-y-8 hidden">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Main Poll Chart -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">Distribution of Votes by Candidate</h3>
+                            <p class="text-xs text-slate-500">Live breakdown of votes cast across all lists</p>
+                        </div>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate text-[10px] animate-spin"></i> Live Poll Data
+                        </span>
+                    </div>
+
+                    <div class="relative w-full h-[340px]">
+                        <canvas id="votingAnalyticsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- List Weight Summary Card -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 mb-4">Priority List Breakdown</h3>
+                        
+                        <div class="space-y-4 text-xs">
+                            <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-blue-900 block">List 1 (First Priority)</span>
+                                    <span class="text-slate-500">3 Nominees</span>
+                                </div>
+                                <span class="text-lg font-black text-blue-700" id="list1Total">0 Votes</span>
+                            </div>
+
+                            <div class="p-3 bg-purple-50 rounded-xl border border-purple-100 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-purple-900 block">List 2 (Secondary)</span>
+                                    <span class="text-slate-500">7 Nominees</span>
+                                </div>
+                                <span class="text-lg font-black text-purple-700" id="list2Total">0 Votes</span>
+                            </div>
+
+                            <div class="p-3 bg-amber-50 rounded-xl border border-amber-100 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-amber-900 block">List 3 (Third Tier)</span>
+                                    <span class="text-slate-500">3 Nominees</span>
+                                </div>
+                                <span class="text-lg font-black text-amber-700" id="list3Total">0 Votes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 text-center">
+                        <span class="text-xs text-slate-500">Total Recorded System Votes: <strong class="text-slate-900 font-bold" id="totalVotesCount">0</strong></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Custom Modal for Vote Confirmation -->
+    <div id="voteModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-bold text-slate-900">Vote Confirmation</h3>
+                <p class="text-xs text-slate-500">Are you sure you want to cast your vote for:</p>
+                <p class="text-base font-black text-blue-600 py-1" id="selectedCandidateName">Candidate Name</p>
+                <p class="text-[11px] text-slate-400" id="selectedCandidateList">List 1 Priority</p>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button onclick="confirmVoteSubmission()" id="confirmVoteBtn" class="w-1/2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+                    <span>Confirm Vote</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-slate-800 flex items-center space-x-3 z-50 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <div>
+            <p class="text-xs font-bold text-white" id="toastTitle">Success</p>
+            <p class="text-[11px] text-slate-300" id="toastMsg">Vote recorded!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-semibold text-slate-300">Administrative Executive Election Commission</p>
+                <p class="text-[11px] text-slate-500">Official Handover Succession Portal &bull; Mariam Badr &rarr; Riham Mohamed</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="bg-slate-800 text-slate-300 px-3 py-1 rounded text-[10px] font-mono">System Ver: 3.0.1 (Cloud Sync)</span>
+                <span class="text-emerald-400 font-semibold text-[11px]"><i class="fa-solid fa-lock text-[10px]"></i> Encrypted Live Polling</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Imports and Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by environment or default sandbox
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'admin-exec-voting-2026';
+        
+        // Firebase configuration (uses standard environment config or mock fallback)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDemoKeyForPublicVotingPortalSystem",
+            authDomain: "admin-exec-voting.firebaseapp.com",
+            projectId: "admin-exec-voting",
+            storageBucket: "admin-exec-voting.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:demo"
+        };
+
+        let app, auth, db;
+        let currentUser = null;
+        let hasVotedLocally = false;
+
+        // Default candidate data map
+        const initialVoteCounts = {
+            "Ahmed Adel": 0,
+            "Shahd Ashraf": 0,
+            "Mohamed El Deeb": 0,
+            "Asmaa El Deksh": 0,
+            "Ayat Mohamed": 0,
+            "Shrouk Raafat": 0,
+            "Alaa Ali": 0,
+            "Asmaa Ali": 0,
+            "Youssef Emad": 0,
+            "Mohamed Amr": 0,
+            "Habiba Mohamed": 0,
+            "Nora Ahmed": 0,
+            "Ashraqat Nouh": 0
+        };
+
+        let liveVoteData = { ...initialVoteCounts };
+
+        async function initFirebase() {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUser = user;
+                        listenToLiveVotes();
+                        checkUserHasVoted();
+                    }
+                });
+            } catch (err) {
+                console.warn("Cloud DB fallback to local memory mode:", err);
+                // Fallback to localStorage if Firebase fails or running offline
+                loadLocalVotes();
+            }
+        }
+
+        function listenToLiveVotes() {
+            if (!db || !currentUser) return;
+
+            const pollDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'elections', 'main_poll');
+            
+            onSnapshot(pollDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data && data.votes) {
+                        liveVoteData = { ...initialVoteCounts, ...data.votes };
+                        updateUIWithVoteData();
+                    }
+                } else {
+                    // Initialize document if not created yet
+                    setDoc(pollDocRef, { votes: initialVoteCounts }, { merge: true }).catch(console.error);
+                }
+            }, (error) => {
+                console.error("Firestore listener error:", error);
+            });
+        }
+
+        async function checkUserHasVoted() {
+            if (!db || !currentUser) return;
+            const voterDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'voters', currentUser.uid);
+            try {
+                const voterSnap = await getDoc(voterDocRef);
+                if (voterSnap.exists()) {
+                    hasVotedLocally = true;
+                    markUserAsVoted(voterSnap.data().candidate);
+                }
+            } catch (e) {
+                console.error("Error checking voter status:", e);
+            }
+        }
+
+        function updateUIWithVoteData() {
+            // List 1 Totals
+            const vAhmed = liveVoteData["Ahmed Adel"] || 0;
+            const vShahd = liveVoteData["Shahd Ashraf"] || 0;
+            const vDeeb = liveVoteData["Mohamed El Deeb"] || 0;
+            const list1Sum = vAhmed + vShahd + vDeeb;
+
+            // Update List 1 Cards
+            updateCandidateUI('ahmed-adel', vAhmed, list1Sum);
+            updateCandidateUI('shahd-ashraf', vShahd, list1Sum);
+            updateCandidateUI('mohamed-el-deeb', vDeeb, list1Sum);
+
+            // List 2 Cards
+            updateSimpleCount('asmaa-el-deksh', liveVoteData["Asmaa El Deksh"] || 0);
+            updateSimpleCount('ayat-mohamed', liveVoteData["Ayat Mohamed"] || 0);
+            updateSimpleCount('shrouk-raafat', liveVoteData["Shrouk Raafat"] || 0);
+            updateSimpleCount('alaa-ali', liveVoteData["Alaa Ali"] || 0);
+            updateSimpleCount('asmaa-ali', liveVoteData["Asmaa Ali"] || 0);
+            updateSimpleCount('youssef-emad', liveVoteData["Youssef Emad"] || 0);
+            updateSimpleCount('mohamed-amr', liveVoteData["Mohamed Amr"] || 0);
+
+            // List 3 Cards
+            updateSimpleCount('habiba-mohamed', liveVoteData["Habiba Mohamed"] || 0);
+            updateSimpleCount('nora-ahmed', liveVoteData["Nora Ahmed"] || 0);
+            updateSimpleCount('ashraqat-nouh', liveVoteData["Ashraqat Nouh"] || 0);
+
+            // Totals
+            const list2Sum = (liveVoteData["Asmaa El Deksh"] || 0) + (liveVoteData["Ayat Mohamed"] || 0) + (liveVoteData["Shrouk Raafat"] || 0) + (liveVoteData["Alaa Ali"] || 0) + (liveVoteData["Asmaa Ali"] || 0) + (liveVoteData["Youssef Emad"] || 0) + (liveVoteData["Mohamed Amr"] || 0);
+            const list3Sum = (liveVoteData["Habiba Mohamed"] || 0) + (liveVoteData["Nora Ahmed"] || 0) + (liveVoteData["Ashraqat Nouh"] || 0);
+            const grandTotal = list1Sum + list2Sum + list3Sum;
+
+            document.getElementById('list1Total').textContent = `${list1Sum} Votes`;
+            document.getElementById('list2Total').textContent = `${list2Sum} Votes`;
+            document.getElementById('list3Total').textContent = `${list3Sum} Votes`;
+            document.getElementById('totalVotesCount').textContent = grandTotal;
+
+            if (window.chartInstance) {
+                window.renderChart();
+            }
+        }
+
+        function updateCandidateUI(id, votes, listTotal) {
+            const countEl = document.getElementById(`votes-${id}`);
+            const barEl = document.getElementById(`bar-${id}`);
+            const pct = listTotal > 0 ? Math.round((votes / listTotal) * 100) : 0;
+            
+            if (countEl) countEl.textContent = `${votes} votes (${pct}%)`;
+            if (barEl) barEl.style.width = `${pct}%`;
+        }
+
+        function updateSimpleCount(id, votes) {
+            const el = document.getElementById(`votes-${id}`);
+            if (el) el.textContent = `${votes} votes`;
+        }
+
+        function markUserAsVoted(candidateName) {
+            const badge = document.getElementById('userVoteBadge');
+            if (badge) {
+                badge.classList.remove('hidden');
+                badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Voted for ${candidateName}`;
+            }
+        }
+
+        window.confirmVoteSubmission = async function() {
+            if (hasVotedLocally) {
+                window.closeModal();
+                window.showToast("Already Voted", "You have already cast your vote in this election.");
+                return;
+            }
+
+            const candidate = window.activeCandidate;
+            if (!candidate) return;
+
+            const btn = document.getElementById('confirmVoteBtn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Submitting...`;
+            btn.disabled = true;
+
+            try {
+                if (db && currentUser) {
+                    const pollDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'elections', 'main_poll');
+                    const voterDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'voters', currentUser.uid);
+
+                    await runTransaction(db, async (transaction) => {
+                        const voterSnap = await transaction.get(voterDocRef);
+                        if (voterSnap.exists()) {
+                            throw new Error("You have already voted!");
+                        }
+
+                        const pollSnap = await transaction.get(pollDocRef);
+                        let currentVotes = pollSnap.exists() ? (pollSnap.data().votes || {}) : { ...initialVoteCounts };
+                        
+                        currentVotes[candidate] = (currentVotes[candidate] || 0) + 1;
+
+                        transaction.set(pollDocRef, { votes: currentVotes }, { merge: true });
+                        transaction.set(voterDocRef, {
+                            votedAt: new Date().toISOString(),
+                            candidate: candidate,
+                            userId: currentUser.uid
+                        });
+                    });
+                } else {
+                    // Fallback local update
+                    liveVoteData[candidate] = (liveVoteData[candidate] || 0) + 1;
+                    localStorage.setItem('has_voted_2026', candidate);
+                    localStorage.setItem('local_votes_backup', JSON.stringify(liveVoteData));
+                    updateUIWithVoteData();
+                }
+
+                hasVotedLocally = true;
+                markUserAsVoted(candidate);
+                window.closeModal();
+                window.showToast("Vote Submitted!", `Your vote for ${candidate} has been recorded live.`);
+            } catch (err) {
+                console.error("Submission error:", err);
+                window.closeModal();
+                window.showToast("Notice", err.message || "Failed to record vote. Please try again.");
+            } finally {
+                btn.innerHTML = `<span>Confirm Vote</span>`;
+                btn.disabled = false;
+            }
+        };
+
+        function loadLocalVotes() {
+            const saved = localStorage.getItem('local_votes_backup');
+            if (saved) {
+                try { liveVoteData = JSON.parse(saved); } catch (e) {}
+            }
+            if (localStorage.getItem('has_voted_2026')) {
+                hasVotedLocally = true;
+                markUserAsVoted(localStorage.getItem('has_voted_2026'));
+            }
+            updateUIWithVoteData();
+        }
+
+        // Initialize Firebase on document ready
+        initFirebase();
+    </script>
+
+    <script>
+        let isSimulationActive = false;
+        let activeCandidate = null;
+        let activeList = null;
+        let chartInstance = null;
+
+        // View Switcher
+        function switchTab(viewId) {
+            document.getElementById('view-nominees').classList.add('hidden');
+            document.getElementById('view-analytics').classList.add('hidden');
+            
+            document.getElementById('tab-nominees').className = "px-4 py-2 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2";
+            document.getElementById('tab-analytics').className = "px-4 py-2 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2";
+
+            if(viewId === 'nominees') {
+                document.getElementById('view-nominees').classList.remove('hidden');
+                document.getElementById('tab-nominees').className = "px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors flex items-center gap-2";
+            } else {
+                document.getElementById('view-analytics').classList.remove('hidden');
+                document.getElementById('tab-analytics').className = "px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors flex items-center gap-2";
+                renderChart();
+            }
+        }
+
+        // Countdown Timer Logic (6:00 PM to 8:00 PM)
+        function updateTimer() {
+            const now = new Date();
+            
+            const startTime = new Date();
+            startTime.setHours(18, 0, 0, 0);
+
+            const endTime = new Date();
+            endTime.setHours(20, 0, 0, 0);
+
+            const timerHours = document.getElementById('timerHours');
+            const timerMins = document.getElementById('timerMins');
+            const timerSecs = document.getElementById('timerSecs');
+            const timerMs = document.getElementById('timerMs');
+            const statusBadge = document.getElementById('votingStatusBadge');
+            const timerSubtext = document.getElementById('timerSubtext');
+
+            if (isSimulationActive) {
+                statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5";
+                statusBadge.innerHTML = '<i class="fa-solid fa-circle text-[8px] animate-pulse"></i> VOTING IS LIVE (TEST MODE)';
+                timerSubtext.textContent = "Test Override Active: Voting window unlocked for testing.";
+                
+                timerHours.textContent = "01";
+                timerMins.textContent = "59";
+                timerSecs.textContent = String(59 - now.getSeconds()).padStart(2, '0');
+                timerMs.textContent = "LIVE";
+
+                enableVotingButtons(true);
+                return;
+            }
+
+            if (now < startTime) {
+                const diff = startTime - now;
+                const hrs = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                timerHours.textContent = String(hrs).padStart(2, '0');
+                timerMins.textContent = String(mins).padStart(2, '0');
+                timerSecs.textContent = String(secs).padStart(2, '0');
+                timerMs.textContent = "WAIT";
+
+                statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5";
+                statusBadge.innerHTML = '<i class="fa-solid fa-clock text-[10px]"></i> VOTING OPENS AT 6:00 PM';
+                timerSubtext.textContent = "Countdown active until 6:00 PM opening window";
+
+                enableVotingButtons(false);
+            } else if (now >= startTime && now <= endTime) {
+                const diff = endTime - now;
+                const hrs = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                timerHours.textContent = String(hrs).padStart(2, '0');
+                timerMins.textContent = String(mins).padStart(2, '0');
+                timerSecs.textContent = String(secs).padStart(2, '0');
+                timerMs.textContent = "OPEN";
+
+                statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5";
+                statusBadge.innerHTML = '<i class="fa-solid fa-circle text-[8px] animate-pulse"></i> VOTING IS LIVE NOW';
+                timerSubtext.textContent = "Voting window closes at 8:00 PM";
+
+                enableVotingButtons(true);
+            } else {
+                timerHours.textContent = "00";
+                timerMins.textContent = "00";
+                timerSecs.textContent = "00";
+                timerMs.textContent = "END";
+
+                statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30 flex items-center gap-1.5";
+                statusBadge.innerHTML = '<i class="fa-solid fa-lock text-[10px]"></i> VOTING CLOSED (8:00 PM)';
+                timerSubtext.textContent = "Voting window has officially concluded for today.";
+
+                enableVotingButtons(false);
+            }
+        }
+
+        function toggleVotingSimulation() {
+            isSimulationActive = !isSimulationActive;
+            showToast("Test Window Toggled", isSimulationActive ? "Voting unlocked for testing!" : "Reverted to live 6:00 PM schedule.");
+            updateTimer();
+        }
+
+        function enableVotingButtons(enabled) {
+            const btns = document.querySelectorAll('.vote-btn');
+            btns.forEach(btn => {
+                if(enabled) {
+                    btn.removeAttribute('disabled');
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    btn.setAttribute('disabled', 'true');
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        }
+
+        // Modal Handling
+        function castVote(candidateName, listName) {
+            window.activeCandidate = candidateName;
+            window.activeList = listName;
+            document.getElementById('selectedCandidateName').textContent = candidateName;
+            document.getElementById('selectedCandidateList').textContent = listName + ' Nominee';
+            document.getElementById('voteModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('voteModal').classList.add('hidden');
+        }
+
+        function showToast(title, msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMsg').textContent = msg;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('votingAnalyticsChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Extract values from live window state if available
+            const labels = ['Ahmed Adel', 'Shahd Ashraf', 'Mohamed El Deeb', 'Asmaa El Deksh', 'Ayat Mohamed', 'Shrouk Raafat', 'Habiba Mohamed'];
+            const dataValues = labels.map(name => {
+                return (window.liveVoteData && window.liveVoteData[name]) ? window.liveVoteData[name] : 0;
+            });
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Live Votes',
+                        data: dataValues,
+                        backgroundColor: [
+                            '#1d4ed8',
+                            '#2563eb',
+                            '#3b82f6',
+                            '#9333ea',
+                            '#a855f7',
+                            '#c084fc',
+                            '#d97706'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { font: { family: 'Inter', size: 11 }, stepSize: 1 }
+                        },
+                        x: {
+                            ticks: { font: { family: 'Inter', size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            window.chartInstance = chartInstance;
+        }
+
+        window.renderChart = renderChart;
+        window.castVote = castVote;
+        window.closeModal = closeModal;
+        window.showToast = showToast;
+        window.toggleVotingSimulation = toggleVotingSimulation;
+
+        // Initialize Timer on Load
+        window.onload = function() {
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        };
+    </script>
+</body>
+</html>
